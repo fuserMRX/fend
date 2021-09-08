@@ -1,35 +1,42 @@
-const path = require('path')
-const webpack = require('webpack')
-const HtmlWebPackPlugin = require("html-webpack-plugin")
-const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+// eslint-disable-next-line no-unused-vars
+const webpack = require('webpack');
+const path = require('path');
+const { merge } = require('webpack-merge');
+const common = require('./webpack.common.js');
+// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
-module.exports = {
-    entry: './src/client/index.js',
+module.exports = merge(common, {
     mode: 'development',
-    devtool: 'source-map',
-    stats: 'verbose',
+    devServer: {
+        static: {
+            // ability to serve static files - img, videos, bundled file
+            directory: path.join(__dirname, './dist'),
+        },
+        client: {
+            progress: true,
+        },
+        compress: true,
+        port: 8080,
+    },
     module: {
         rules: [
             {
-                test: '/\.js$/',
-                exclude: /node_modules/,
-                loader: "babel-loader"
-            }
+                test: /\.js$/,
+                exclude: /(node_modules)/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env'],
+                        plugins: ['@babel/plugin-proposal-object-rest-spread']
+                    }
+                }
+            },
+            {
+                test: /\.s[ac]ss$/i,
+                exclude: /(node_modules)/,
+                // style-loader is used for inline approach which is not so good for prod
+                use: ['style-loader', 'css-loader', 'sass-loader'],
+            },
         ]
     },
-    plugins: [
-        new HtmlWebPackPlugin({
-            template: "./src/client/views/index.html",
-            filename: "./index.html",
-        }),
-        new CleanWebpackPlugin({
-            // Simulate the removal of files
-            dry: true,
-            // Write Logs to Console
-            verbose: true,
-            // Automatically remove all unused webpack assets on rebuild
-            cleanStaleWebpackAssets: true,
-            protectWebpackAssets: false
-        })
-    ]
-}
+});
