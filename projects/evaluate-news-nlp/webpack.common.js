@@ -1,4 +1,4 @@
-// file to gather all similiar cases beween prod and development
+// file to gather all similiar cases between prod and development
 // eslint-disable-next-line no-unused-vars
 const webpack = require('webpack');
 const path = require('path');
