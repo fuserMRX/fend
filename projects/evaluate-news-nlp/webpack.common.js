@@ -6,7 +6,9 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-    entry: './src/client/index.js',
+    // @babel/polyfill is added to remove error "regeneratorRuntime is not defined"
+    // and create ability to use async await
+    entry: ['@babel/polyfill','./src/client/index.js'],
     devtool: 'source-map',
     output: {
         path: path.resolve(__dirname, './dist'),

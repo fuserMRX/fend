@@ -3,7 +3,6 @@ const webpack = require('webpack');
 const path = require('path');
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
-// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 module.exports = merge(common, {
     mode: 'development',
@@ -26,7 +25,6 @@ module.exports = merge(common, {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['@babel/preset-env'],
                         plugins: ['@babel/plugin-proposal-object-rest-spread']
                     }
                 }
